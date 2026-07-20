@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --ink: #18140f;
+  --paper: #f1ead9;
+  --paper-2: #e8dfc9;
+  --amber: #e8a23c;
+  --amber-dark: #8a5a17;
+  --maroon: #7a2a1f;
+  --maroon-light: #f1d9cf;
+  --green: #2e6b4f;
+  --green-light: #dceadf;
+  --red: #b3311f;
+  --red-light: #f6dbd6;
+  --line: rgba(24, 20, 15, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Archivo', system-ui, sans-serif;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
