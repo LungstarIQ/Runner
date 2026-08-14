@@ -1,0 +1,154 @@
+// Mirrors TICKET_THEME in shared/constants.ts -- see the same note in
+// home-dashboard.component.scss re: promoting these to a shared partial.
+:host {
+  --ink: #18140f;
+  --paper-2: #e8dfc9;
+  --amber-dark: #8a5a17;
+  --maroon: #7a2a1f;
+  --line: rgba(24, 20, 15, 0.16);
+
+  display: block;
+  font-family: 'Archivo', sans-serif;
+  color: var(--ink);
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.chips {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.cat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  padding: 7px 13px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+  color: #4a4438;
+  background: #fff;
+  cursor: pointer;
+  flex: none;
+
+  &.active {
+    background: var(--maroon);
+    color: #fff;
+    border-color: var(--maroon);
+  }
+}
+
+.status-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: #6b6355;
+  text-align: center;
+  padding: 24px 0;
+
+  &.error {
+    color: var(--maroon);
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.ecard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--amber-dark) 0 4px,
+      transparent 4px 9px
+    );
+  }
+}
+
+.ecard-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.ecard-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding-left: 9px;
+}
+
+.price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber-dark);
+  background: #fceeda;
+  padding: 4px 9px;
+  border-radius: 6px;
+  flex: none;
+  white-space: nowrap;
+}
+
+.ecard-meta {
+  display: flex;
+  gap: 9px;
+  margin-top: 9px;
+  padding-left: 9px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: #6b6355;
+
+  &.urgent {
+    color: var(--maroon);
+    font-weight: 600;
+  }
+}
+
+// ---- Desktop ----
+@media (min-width: 900px) {
+  .feed {
+    padding: 0;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .ecard {
+    padding: 16px 18px;
+  }
+
+  .ecard-title {
+    font-size: 13.5px;
+  }
+}

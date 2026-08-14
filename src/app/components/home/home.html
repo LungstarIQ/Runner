@@ -1,0 +1,74 @@
+<section class="dashboard">
+
+  <header class="greet-row">
+    <div>
+      <h1 class="greet-hello">Sawubona</h1>
+      <p class="greet-sub">{{ today | date: 'EEEE, h:mma' }}</p>
+    </div>
+    <a class="cta-btn" routerLink="/errands/new">+ Post an errand</a>
+  </header>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">
+        {{ currentUser()?.ratingAvg ?? '—' }}{{ currentUser()?.ratingAvg ? ' ★' : '' }}
+      </div>
+      <div class="stat-lbl">your rating</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">{{ currentUser()?.completedErrandsCount ?? '—' }}</div>
+      <div class="stat-lbl">errands completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">{{ activeErrand() ? 1 : 0 }}</div>
+      <div class="stat-lbl">active ticket</div>
+    </div>
+  </div>
+
+  @if (activeErrand(); as errand) {
+    <a class="active-card" [routerLink]="['/errands', errand.errandId]">
+      <div class="active-top">
+        <span class="active-tag">
+          TICKET #{{ errand.errandId }} — {{ statusLabels[errand.status] }}
+        </span>
+        <span class="active-view">view ticket →</span>
+      </div>
+      <div class="active-task">{{ errand.title }}</div>
+      <div class="active-meta">
+        <span class="active-dot"></span>
+        @if (errand.runner; as runner) {
+          {{ runner.fullName }} · {{ categoryLabels[errand.category] }}
+        } @else {
+          Waiting for a runner to claim this
+        }
+      </div>
+    </a>
+  } @else {
+    <div class="active-card empty">
+      <div class="active-task">No active errand right now</div>
+      <div class="active-meta">Post one, or browse what's nearby.</div>
+    </div>
+  }
+
+  <div class="quick-row">
+    <a class="quick-btn" routerLink="/errands/new">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+      <span>Post an errand</span>
+    </a>
+    <a class="quick-btn" routerLink="/errands">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
+      </svg>
+      <span>Browse errands</span>
+    </a>
+    <a class="quick-btn" routerLink="/runners">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" />
+      </svg>
+      <span>Find a runner</span>
+    </a>
+  </div>
+
+</section>

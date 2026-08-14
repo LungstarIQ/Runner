@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: clamp(12px, 3vw, 24px);
+}
+
+.appbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.appbar-logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+}
+.post-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #fff;
+  background: var(--maroon);
+  padding: 7px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.cat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: #4a4438;
+  white-space: nowrap;
+}
+.cat.active {
+  background: var(--maroon);
+  color: #fff;
+  border-color: var(--maroon);
+}
+
+.notice {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #6b6355;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+.ecard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.ecard::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background-image: repeating-linear-gradient(to bottom, var(--amber) 0 4px, transparent 4px 9px);
+}
+.ecard-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+  padding-left: 10px;
+}
+.ecard-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--amber-dark);
+  background: #fceeda;
+  padding: 3px 9px;
+  border-radius: 5px;
+  flex: none;
+}
+.ecard-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  padding-left: 10px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: #6b6355;
+}
+.urgent {
+  color: var(--maroon);
+  font-weight: 700;
+}

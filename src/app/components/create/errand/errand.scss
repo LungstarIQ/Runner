@@ -1,0 +1,176 @@
+// Mirrors TICKET_THEME in shared/constants.ts -- see the same note in
+// home-dashboard.component.scss re: promoting these to a shared partial.
+:host {
+  --ink: #18140f;
+  --paper-2: #e8dfc9;
+  --amber: #e8a23c;
+  --maroon: #7a2a1f;
+  --line: rgba(24, 20, 15, 0.16);
+
+  display: block;
+  font-family: 'Archivo', sans-serif;
+  color: var(--ink);
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  max-width: 560px;
+}
+
+.form-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    margin: 0;
+  }
+
+  .cancel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: #6b6355;
+    text-decoration: none;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: #6b6355;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  input,
+  textarea {
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: 'Archivo', sans-serif;
+    color: var(--ink);
+
+    &:focus {
+      outline: 2px solid var(--amber);
+      outline-offset: 1px;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+fieldset.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.chiprow {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.cat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  padding: 7px 13px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  color: #4a4438;
+  background: #fff;
+  cursor: pointer;
+
+  &.active {
+    background: var(--maroon);
+    color: #fff;
+    border-color: var(--maroon);
+  }
+}
+
+.manifest {
+  background: var(--ink);
+  border-radius: 10px;
+  padding: 13px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.manifest-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+}
+
+.manifest-desc {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.manifest-fare {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.error-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--maroon);
+  margin: 0;
+}
+
+.cta-btn {
+  background: var(--maroon);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 13px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ---- Desktop ----
+@media (min-width: 900px) {
+  .post-form {
+    padding: 0;
+  }
+
+  .form-head h1 {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,230 @@
+// Mirrors TICKET_THEME in shared/constants.ts. If that constant changes,
+// update these too -- consider promoting to a global styles/_tokens.scss
+// once a second component needs the same values.
+:host {
+  --ink: #18140f;
+  --paper: #f1ead9;
+  --paper-2: #e8dfc9;
+  --amber: #e8a23c;
+  --amber-dark: #8a5a17;
+  --maroon: #7a2a1f;
+  --green: #2e6b4f;
+  --line: rgba(24, 20, 15, 0.16);
+
+  display: block;
+  font-family: 'Archivo', sans-serif;
+  color: var(--ink);
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 16px 32px;
+}
+
+.greet-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.greet-hello {
+  font-family: 'Anton', sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.greet-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #6b6355;
+  margin: 6px 0 0;
+}
+
+.cta-btn {
+  background: var(--maroon);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 16px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.stat-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  color: #8a8272;
+  margin-top: 3px;
+  text-transform: lowercase;
+}
+
+.active-card {
+  background: #fff;
+  border: 1px dashed var(--maroon);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  &.empty {
+    border-style: dashed;
+    opacity: 0.8;
+  }
+}
+
+.active-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.active-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: var(--maroon);
+  letter-spacing: 0.04em;
+}
+
+.active-view {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: var(--maroon);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.active-task {
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.active-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: #6b6355;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.active-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex: none;
+}
+
+.quick-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.quick-btn {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 11px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  text-decoration: none;
+  color: var(--ink);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--maroon);
+  }
+
+  span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+  }
+}
+
+// ---- Desktop ----
+@media (min-width: 900px) {
+  .dashboard {
+    padding: 0;
+    gap: 24px;
+  }
+
+  .greet-hello {
+    font-size: 30px;
+  }
+
+  .greet-sub {
+    font-size: 12px;
+  }
+
+  .stat-card {
+    padding: 16px 18px;
+    text-align: left;
+    border-radius: 11px;
+  }
+
+  .stat-num {
+    font-size: 22px;
+  }
+
+  .stat-lbl {
+    font-size: 10.5px;
+    margin-top: 5px;
+  }
+
+  .active-card {
+    padding: 16px 20px;
+    border-radius: 11px;
+  }
+
+  .active-task {
+    font-size: 16px;
+  }
+
+  .quick-row {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 480px;
+  }
+
+  .quick-btn {
+    padding: 13px 14px;
+    border-radius: 10px;
+  }
+}
