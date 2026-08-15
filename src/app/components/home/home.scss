@@ -150,7 +150,7 @@
 
 .quick-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
 
@@ -219,8 +219,8 @@
   }
 
   .quick-row {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 480px;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 620px;
   }
 
   .quick-btn {

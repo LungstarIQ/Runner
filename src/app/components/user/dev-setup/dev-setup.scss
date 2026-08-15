@@ -5,6 +5,7 @@
   --paper-2: #e8dfc9;
   --amber: #e8a23c;
   --maroon: #7a2a1f;
+  --maroon-light: #f1d9cf;
   --line: rgba(24, 20, 15, 0.16);
 
   display: block;
@@ -12,55 +13,81 @@
   color: var(--ink);
 }
 
-.post-form {
+.setup {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  max-width: 560px;
+  max-width: 480px;
 }
 
-.form-head {
+.setup-head h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  margin: 0;
+}
+
+.setup-warn {
+  background: var(--maroon-light);
+  border: 1px solid var(--maroon);
+  border-radius: 9px;
+  padding: 10px 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: var(--maroon);
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+
+.seg-tabs {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 6px;
+}
 
-  h1 {
-    font-family: 'Anton', sans-serif;
-    font-size: 22px;
-    margin: 0;
-  }
+.seg {
+  flex: 1;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 9px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: #6b6355;
+  cursor: pointer;
 
-  .cancel {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: #6b6355;
-    text-decoration: none;
+  &.active {
+    background: var(--ink);
+    color: var(--amber);
+    border-color: var(--ink);
   }
+}
+
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border: none;
-  padding: 0;
-  margin: 0;
+  gap: 6px;
 
   label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 10.5px;
+    font-size: 10px;
     color: #6b6355;
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
 
-  input,
-  textarea {
+  input {
     background: #fff;
     border: 2px solid var(--ink);
     border-radius: 6px;
-    padding: 10px 12px;
+    padding: 9px 11px;
     font-size: 13px;
     font-family: 'Archivo', sans-serif;
     color: var(--ink);
@@ -70,34 +97,18 @@
       outline-offset: 1px;
     }
   }
-
-  textarea {
-    resize: vertical;
-  }
-}
-
-fieldset.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
 }
 
 .chiprow {
   display: flex;
-  gap: 7px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
-.cat {
+.chip {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
-  padding: 7px 13px;
+  font-size: 10px;
+  padding: 6px 12px;
   border-radius: 20px;
   border: 1px solid var(--line);
   color: #4a4438;
@@ -109,35 +120,6 @@ fieldset.field {
     color: #fff;
     border-color: var(--maroon);
   }
-}
-
-.manifest {
-  background: var(--ink);
-  border-radius: 10px;
-  padding: 13px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.manifest-num {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
-  color: var(--amber);
-  letter-spacing: 0.05em;
-}
-
-.manifest-desc {
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.manifest-fare {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
 }
 
 .error-text {
@@ -152,10 +134,10 @@ fieldset.field {
   color: #fff;
   border: none;
   border-radius: 9px;
-  padding: 13px;
+  padding: 12px;
   font-family: 'Archivo', sans-serif;
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 13px;
   cursor: pointer;
 
   &:disabled {
@@ -164,13 +146,35 @@ fieldset.field {
   }
 }
 
+.id-stub {
+  background: var(--ink);
+  border-radius: 9px;
+  padding: 11px 13px;
+}
+
+.id-stub-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.id-stub-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #fff;
+  margin-top: 5px;
+  word-break: break-all;
+}
+
 // ---- Desktop ----
 @media (min-width: 900px) {
-  .post-form {
+  .setup {
     padding: 0;
   }
 
-  .form-head h1 {
+  .setup-head h1 {
     font-size: 26px;
   }
 }

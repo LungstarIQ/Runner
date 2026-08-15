@@ -1,0 +1,97 @@
+<section class="setup">
+
+  <header class="setup-head">
+    <h1>Dev setup</h1>
+    <p class="setup-warn">
+      The database starts empty — no seed data. Create a test customer and/or
+      runner below before anything else in the app will work.
+    </p>
+  </header>
+
+  <div class="seg-tabs">
+    <button type="button" class="seg" [class.active]="tab() === 'customer'" (click)="setTab('customer')">
+      Customer
+    </button>
+    <button type="button" class="seg" [class.active]="tab() === 'runner'" (click)="setTab('runner')">
+      Runner
+    </button>
+  </div>
+
+  @if (tab() === 'customer') {
+    <form class="setup-form" [formGroup]="customerForm" (ngSubmit)="createCustomer()">
+      <div class="field">
+        <label for="c-name">Full name</label>
+        <input id="c-name" type="text" formControlName="fullName" placeholder="Thabo Mokoena" />
+      </div>
+      <div class="field">
+        <label for="c-email">Email</label>
+        <input id="c-email" type="email" formControlName="email" placeholder="thabo@example.com" />
+      </div>
+      <div class="field">
+        <label for="c-phone">Phone (optional)</label>
+        <input id="c-phone" type="tel" formControlName="phoneNumber" placeholder="082 000 1234" />
+      </div>
+
+      @if (submitError(); as err) {
+        <p class="error-text">{{ err }}</p>
+      }
+
+      <button type="submit" class="cta-btn" [disabled]="submitting()">
+        {{ submitting() ? 'Creating…' : 'Create customer' }}
+      </button>
+
+      @if (existingCustomerId(); as id) {
+        <div class="id-stub">
+          <div class="id-stub-lbl">Current customer id</div>
+          <div class="id-stub-val">{{ id }}</div>
+        </div>
+      }
+    </form>
+  } @else {
+    <form class="setup-form" [formGroup]="runnerForm" (ngSubmit)="createRunner()">
+      <div class="field">
+        <label for="r-name">Full name</label>
+        <input id="r-name" type="text" formControlName="fullName" placeholder="Sipho Mahlangu" />
+      </div>
+      <div class="field">
+        <label for="r-email">Email</label>
+        <input id="r-email" type="email" formControlName="email" placeholder="sipho@example.com" />
+      </div>
+      <div class="field">
+        <label for="r-phone">Phone (optional)</label>
+        <input id="r-phone" type="tel" formControlName="phoneNumber" placeholder="071 000 5678" />
+      </div>
+      <div class="field">
+        <label>Transport mode</label>
+        <div class="chiprow">
+          @for (mode of transportModes; track mode) {
+            <button
+              type="button"
+              class="chip"
+              [class.active]="runnerForm.controls.transportMode.value === mode"
+              (click)="runnerForm.controls.transportMode.setValue(mode)"
+            >
+              {{ mode }}
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (submitError(); as err) {
+        <p class="error-text">{{ err }}</p>
+      }
+
+      <button type="submit" class="cta-btn" [disabled]="submitting()">
+        {{ submitting() ? 'Creating…' : 'Create runner' }}
+      </button>
+
+      @if (existingRunnerId(); as id) {
+        <div class="id-stub">
+          <div class="id-stub-lbl">Current runner id</div>
+          <div class="id-stub-val">{{ id }}</div>
+        </div>
+      }
+    </form>
+  }
+
+</section>
