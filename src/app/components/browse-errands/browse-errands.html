@@ -1,0 +1,50 @@
+<section class="feed">
+
+  <div class="chips">
+    <button
+      type="button"
+      class="cat"
+      [class.active]="selectedCategory() === 'ALL'"
+      (click)="selectCategory('ALL')"
+    >
+      All
+    </button>
+    @for (cat of categories; track cat) {
+      <button
+        type="button"
+        class="cat"
+        [class.active]="selectedCategory() === cat"
+        (click)="selectCategory(cat)"
+      >
+        {{ cat }}
+      </button>
+    }
+  </div>
+
+  @if (blocked()) {
+    <p class="status-text">
+      No feed endpoint on the backend yet — nothing to load here until
+      GET /errands exists.
+    </p>
+  } @else if (loading()) {
+    <p class="status-text">Loading errands nearby…</p>
+  } @else if (errands().length === 0) {
+    <p class="status-text">No errands posted nearby right now.</p>
+  } @else {
+    <div class="card-grid">
+      @for (errand of errands(); track errand.id) {
+        <a class="ecard" [routerLink]="['/errands', errand.id]">
+          <div class="ecard-top">
+            <div class="ecard-title">{{ errand.description }}</div>
+            <div class="price">R{{ errand.payoutAmount }}</div>
+          </div>
+          <div class="ecard-meta">
+            <span class="tag">{{ errand.pickupLocation.suburb }}</span>
+            <span class="tag">{{ errand.category }}</span>
+          </div>
+        </a>
+      }
+    </div>
+  }
+
+</section>

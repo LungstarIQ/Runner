@@ -1,0 +1,298 @@
+// Matches TICKET_THEME in shared/constants.ts, plus the sidebar/topbar
+// values from the original desktop mockup verbatim.
+:host {
+  --ink: #18140f;
+  --paper: #f1ead9;
+  --paper-2: #e8dfc9;
+  --amber: #e8a23c;
+  --amber-dark: #8a5a17;
+  --maroon: #7a2a1f;
+  --maroon-light: #f1d9cf;
+  --line: rgba(24, 20, 15, 0.16);
+
+  display: block;
+  min-height: 100vh;
+  font-family: 'Archivo', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle, rgba(24, 20, 15, 0.05) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--paper);
+}
+
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// ---- Sidebar (desktop only) ----
+.sidebar {
+  display: none;
+}
+
+.side-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+}
+
+.side-mark {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  background: var(--maroon);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.side-word {
+  font-family: 'Anton', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: var(--paper);
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.side-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  color: #c9c0ac;
+  position: relative;
+  text-decoration: none;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+  }
+
+  &.active {
+    background: var(--maroon);
+    color: #fff;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+  }
+}
+
+.side-sec-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: #8a8272;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+  padding: 0 12px;
+  margin-top: 4px;
+}
+
+.side-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid rgba(241, 234, 217, 0.14);
+}
+
+.side-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--amber);
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.side-foot-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.side-foot-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: #8a8272;
+  margin-top: 1px;
+}
+
+// ---- Main column ----
+.shell-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+// ---- Topbar (desktop only) ----
+.topbar {
+  display: none;
+}
+
+.search {
+  flex: 1;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px 14px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    color: #8a8272;
+    flex: none;
+  }
+
+  input {
+    border: none;
+    background: none;
+    outline: none;
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    width: 100%;
+
+    &::placeholder {
+      color: #a49c8a;
+    }
+  }
+}
+
+.topbar-spacer {
+  flex: 1;
+}
+
+.cta-btn {
+  background: var(--maroon);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 11px 18px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+// ---- Page content ----
+.page {
+  flex: 1;
+  padding-bottom: 76px; // clears the fixed mobile nav
+}
+
+// ---- Mobile bottom nav ----
+.mobile-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 4px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+  z-index: 10;
+}
+
+.navbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #a49c8a;
+  text-decoration: none;
+
+  &.active {
+    color: var(--maroon);
+  }
+
+  span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    text-transform: lowercase;
+  }
+}
+
+.navicon {
+  width: 19px;
+  height: 19px;
+}
+
+// ---- Desktop ----
+@media (min-width: 900px) {
+  .app {
+    display: grid;
+    grid-template-columns: 236px 1fr;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 22px 16px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 26px 36px 0;
+  }
+
+  .page {
+    padding: 26px 36px 60px;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+}

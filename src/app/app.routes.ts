@@ -1,10 +1,21 @@
 import { Routes } from '@angular/router';
+import { DevSetup } from './components/user/dev-setup/dev-setup';
+import { TicketTracker } from './components/ticket-tracker/ticket-tracker';
+import { PostErrand } from './components/post-errand/post-errand';
+import { BrowseErrands } from './components/browse-errands/browse-errands';
+import { Home } from './components/home/home';
+import { Tab } from './components/tab/tab';
 
 export const routes: Routes = [
-    
-    {
-        path: '',
-        loadComponent: () => import('./components/home/home').then((m) => m.Home)
-    },
-    
+  {
+    path: '',
+    component: Tab,
+    children: [
+      { path: '', component: Home },
+      { path: 'errands', component: BrowseErrands },
+      { path: 'errands/new', component: PostErrand },
+      { path: 'errands/:id', component: TicketTracker },
+      { path: 'dev-setup', component: DevSetup},
+    ],
+  },
 ];

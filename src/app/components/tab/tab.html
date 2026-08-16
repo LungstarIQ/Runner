@@ -1,0 +1,98 @@
+<div class="app">
+
+  <!-- Sidebar: desktop only (hidden below 900px via CSS) -->
+  <aside class="sidebar">
+    <div class="side-brand">
+      <div class="side-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F1EAD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" />
+        </svg>
+      </div>
+      <div class="side-word">RUNNER</div>
+    </div>
+
+    <nav class="side-nav">
+      <div class="side-sec-lbl">menu</div>
+      <a class="side-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7" /><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" /></svg>
+        Home
+      </a>
+      <a class="side-item" routerLink="/errands" routerLinkActive="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
+        Browse errands
+      </a>
+      <a class="side-item" routerLink="/errands/new" routerLinkActive="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+        Post an errand
+      </a>
+      <a class="side-item" routerLink="/runners" routerLinkActive="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" /></svg>
+        Find a runner
+      </a>
+
+      <div class="side-sec-lbl" style="margin-top: 14px;">account</div>
+      <a class="side-item" routerLink="/dev-setup" routerLinkActive="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
+        Dev setup
+      </a>
+    </nav>
+
+    <div class="side-foot">
+      <div class="side-avatar">{{ customerId() ? customerId()!.slice(0, 2).toUpperCase() : '—' }}</div>
+      <div>
+        @if (customerId(); as id) {
+          <div class="side-foot-name">Customer session</div>
+          <div class="side-foot-sub">{{ id.slice(0, 8) }}…</div>
+        } @else {
+          <div class="side-foot-name">No customer yet</div>
+          <div class="side-foot-sub">Set one up →</div>
+        }
+      </div>
+    </div>
+  </aside>
+
+  <div class="shell-main">
+    <!-- Topbar: desktop only -->
+    <div class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
+        <input type="text" placeholder="Search errands, runners, tickets…" />
+      </div>
+      <div class="topbar-spacer"></div>
+      <a class="cta-btn" routerLink="/errands/new">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14" /></svg>
+        Post an errand
+      </a>
+    </div>
+
+    <!-- Page content -->
+    <main class="page">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Bottom nav: mobile only -->
+    <nav class="mobile-nav">
+      <a class="navbtn" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7" /><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" /></svg>
+        <span>Home</span>
+      </a>
+      <a class="navbtn" routerLink="/errands/new" routerLinkActive="active">
+        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+        <span>Post</span>
+      </a>
+      <a class="navbtn" routerLink="/errands" routerLinkActive="active">
+        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16M4 8v11a1 1 0 001 1h14a1 1 0 001-1V8M4 8l2-4h12l2 4" /></svg>
+        <span>Tickets</span>
+      </a>
+      <a class="navbtn" routerLink="/runners" routerLinkActive="active">
+        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" /></svg>
+        <span>Runners</span>
+      </a>
+      <a class="navbtn" routerLink="/dev-setup" routerLinkActive="active">
+        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
+        <span>You</span>
+      </a>
+    </nav>
+  </div>
+
+</div>
