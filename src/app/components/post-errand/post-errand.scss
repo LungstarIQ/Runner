@@ -39,6 +39,24 @@
   }
 }
 
+.post-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fields-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.preview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -168,9 +186,28 @@ fieldset.field {
 @media (min-width: 900px) {
   .post-form {
     padding: 0;
+    max-width: none;
   }
 
   .form-head h1 {
     font-size: 26px;
+  }
+
+  .post-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .fields-col {
+    flex: 1;
+    max-width: 560px;
+  }
+
+  .preview-col {
+    width: 300px;
+    flex: none;
+    position: sticky;
+    top: 26px;
   }
 }

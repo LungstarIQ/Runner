@@ -1,24 +1,27 @@
 <section class="feed">
 
-  <div class="chips">
-    <button
-      type="button"
-      class="cat"
-      [class.active]="selectedCategory() === 'ALL'"
-      (click)="selectCategory('ALL')"
-    >
-      All
-    </button>
-    @for (cat of categories; track cat) {
+  <div class="sec-head">
+    <div class="sec-title">Browse errands nearby</div>
+    <div class="chips">
       <button
         type="button"
         class="cat"
-        [class.active]="selectedCategory() === cat"
-        (click)="selectCategory(cat)"
+        [class.active]="selectedCategory() === 'ALL'"
+        (click)="selectCategory('ALL')"
       >
-        {{ cat }}
+        All
       </button>
-    }
+      @for (cat of categories; track cat) {
+        <button
+          type="button"
+          class="cat"
+          [class.active]="selectedCategory() === cat"
+          (click)="selectCategory(cat)"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
   </div>
 
   @if (blocked()) {

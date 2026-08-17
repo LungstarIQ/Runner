@@ -11,67 +11,73 @@
     </p>
   }
 
-  <div class="field">
-    <label for="description">What needs doing</label>
-    <textarea
-      id="description"
-      formControlName="description"
-      rows="3"
-      placeholder="e.g. Collect my parcel from PostNet Maponya Mall and drop at home"
-    ></textarea>
-  </div>
+  <div class="post-layout">
+    <div class="fields-col">
+      <div class="field">
+        <label for="description">What needs doing</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="3"
+          placeholder="e.g. Collect my parcel from PostNet Maponya Mall and drop at home"
+        ></textarea>
+      </div>
 
-  <div class="field">
-    <label>Category</label>
-    <div class="chiprow">
-      @for (cat of categories; track cat) {
-        <button
-          type="button"
-          class="cat"
-          [class.active]="form.controls.category.value === cat"
-          (click)="form.controls.category.setValue(cat)"
-        >
-          {{ cat }}
-        </button>
+      <div class="field">
+        <label>Category</label>
+        <div class="chiprow">
+          @for (cat of categories; track cat) {
+            <button
+              type="button"
+              class="cat"
+              [class.active]="form.controls.category.value === cat"
+              (click)="form.controls.category.setValue(cat)"
+            >
+              {{ cat }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <fieldset class="field" formGroupName="pickupLocation">
+        <label>Pickup location</label>
+        <input type="text" formControlName="addressLine" placeholder="Address / landmark" />
+        <div class="two-col">
+          <input type="text" formControlName="suburb" placeholder="Suburb" />
+          <input type="text" formControlName="city" placeholder="City" />
+        </div>
+      </fieldset>
+
+      <fieldset class="field" formGroupName="dropoffLocation">
+        <label>Drop-off location</label>
+        <input type="text" formControlName="addressLine" placeholder="Address / landmark" />
+        <div class="two-col">
+          <input type="text" formControlName="suburb" placeholder="Suburb" />
+          <input type="text" formControlName="city" placeholder="City" />
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="payoutAmount">Payout amount (R)</label>
+        <input id="payoutAmount" type="number" min="1" formControlName="payoutAmount" />
+      </div>
+    </div>
+
+    <div class="preview-col">
+      <div class="manifest">
+        <div class="manifest-num">TICKET PREVIEW</div>
+        <div class="manifest-desc">{{ form.controls.description.value || 'Untitled errand' }}</div>
+        <div class="manifest-fare">R{{ form.controls.payoutAmount.value || 0 }}</div>
+      </div>
+
+      @if (submitError(); as err) {
+        <p class="error-text">{{ err }}</p>
       }
+
+      <button type="submit" class="cta-btn" [disabled]="submitting()">
+        {{ submitting() ? 'Posting…' : 'Post to board' }}
+      </button>
     </div>
   </div>
-
-  <fieldset class="field" formGroupName="pickupLocation">
-    <label>Pickup location</label>
-    <input type="text" formControlName="addressLine" placeholder="Address / landmark" />
-    <div class="two-col">
-      <input type="text" formControlName="suburb" placeholder="Suburb" />
-      <input type="text" formControlName="city" placeholder="City" />
-    </div>
-  </fieldset>
-
-  <fieldset class="field" formGroupName="dropoffLocation">
-    <label>Drop-off location</label>
-    <input type="text" formControlName="addressLine" placeholder="Address / landmark" />
-    <div class="two-col">
-      <input type="text" formControlName="suburb" placeholder="Suburb" />
-      <input type="text" formControlName="city" placeholder="City" />
-    </div>
-  </fieldset>
-
-  <div class="field">
-    <label for="payoutAmount">Payout amount (R)</label>
-    <input id="payoutAmount" type="number" min="1" formControlName="payoutAmount" />
-  </div>
-
-  <div class="manifest">
-    <div class="manifest-num">TICKET PREVIEW</div>
-    <div class="manifest-desc">{{ form.controls.description.value || 'Untitled errand' }}</div>
-    <div class="manifest-fare">R{{ form.controls.payoutAmount.value || 0 }}</div>
-  </div>
-
-  @if (submitError(); as err) {
-    <p class="error-text">{{ err }}</p>
-  }
-
-  <button type="submit" class="cta-btn" [disabled]="submitting()">
-    {{ submitting() ? 'Posting…' : 'Post to board' }}
-  </button>
 
 </form>

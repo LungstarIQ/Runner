@@ -8,90 +8,102 @@
     </p>
   </header>
 
-  <div class="seg-tabs">
-    <button type="button" class="seg" [class.active]="tab() === 'customer'" (click)="setTab('customer')">
-      Customer
-    </button>
-    <button type="button" class="seg" [class.active]="tab() === 'runner'" (click)="setTab('runner')">
-      Runner
-    </button>
-  </div>
-
-  @if (tab() === 'customer') {
-    <form class="setup-form" [formGroup]="customerForm" (ngSubmit)="createCustomer()">
-      <div class="field">
-        <label for="c-name">Full name</label>
-        <input id="c-name" type="text" formControlName="fullName" placeholder="Thabo Mokoena" />
-      </div>
-      <div class="field">
-        <label for="c-email">Email</label>
-        <input id="c-email" type="email" formControlName="email" placeholder="thabo@example.com" />
-      </div>
-      <div class="field">
-        <label for="c-phone">Phone (optional)</label>
-        <input id="c-phone" type="tel" formControlName="phoneNumber" placeholder="082 000 1234" />
+  <div class="setup-layout">
+    <div class="setup-left">
+      <div class="seg-tabs">
+        <button type="button" class="seg" [class.active]="tab() === 'customer'" (click)="setTab('customer')">
+          Customer
+        </button>
+        <button type="button" class="seg" [class.active]="tab() === 'runner'" (click)="setTab('runner')">
+          Runner
+        </button>
       </div>
 
-      @if (submitError(); as err) {
-        <p class="error-text">{{ err }}</p>
+      @if (tab() === 'customer') {
+        <form class="setup-form" [formGroup]="customerForm" (ngSubmit)="createCustomer()">
+          <div class="field">
+            <label for="c-name">Full name</label>
+            <input id="c-name" type="text" formControlName="fullName" placeholder="Thabo Mokoena" />
+          </div>
+          <div class="field">
+            <label for="c-email">Email</label>
+            <input id="c-email" type="email" formControlName="email" placeholder="thabo@example.com" />
+          </div>
+          <div class="field">
+            <label for="c-phone">Phone (optional)</label>
+            <input id="c-phone" type="tel" formControlName="phoneNumber" placeholder="082 000 1234" />
+          </div>
+
+          @if (submitError(); as err) {
+            <p class="error-text">{{ err }}</p>
+          }
+
+          <button type="submit" class="cta-btn" [disabled]="submitting()">
+            {{ submitting() ? 'Creating…' : 'Create customer' }}
+          </button>
+        </form>
+      } @else {
+        <form class="setup-form" [formGroup]="runnerForm" (ngSubmit)="createRunner()">
+          <div class="field">
+            <label for="r-name">Full name</label>
+            <input id="r-name" type="text" formControlName="fullName" placeholder="Sipho Mahlangu" />
+          </div>
+          <div class="field">
+            <label for="r-email">Email</label>
+            <input id="r-email" type="email" formControlName="email" placeholder="sipho@example.com" />
+          </div>
+          <div class="field">
+            <label for="r-phone">Phone (optional)</label>
+            <input id="r-phone" type="tel" formControlName="phoneNumber" placeholder="071 000 5678" />
+          </div>
+          <div class="field">
+            <label>Transport mode</label>
+            <div class="chiprow">
+              @for (mode of transportModes; track mode) {
+                <button
+                  type="button"
+                  class="chip"
+                  [class.active]="runnerForm.controls.transportMode.value === mode"
+                  (click)="runnerForm.controls.transportMode.setValue(mode)"
+                >
+                  {{ mode }}
+                </button>
+              }
+            </div>
+          </div>
+
+          @if (submitError(); as err) {
+            <p class="error-text">{{ err }}</p>
+          }
+
+          <button type="submit" class="cta-btn" [disabled]="submitting()">
+            {{ submitting() ? 'Creating…' : 'Create runner' }}
+          </button>
+        </form>
       }
+    </div>
 
-      <button type="submit" class="cta-btn" [disabled]="submitting()">
-        {{ submitting() ? 'Creating…' : 'Create customer' }}
-      </button>
-
-      @if (existingCustomerId(); as id) {
-        <div class="id-stub">
-          <div class="id-stub-lbl">Current customer id</div>
-          <div class="id-stub-val">{{ id }}</div>
+    <div class="setup-right">
+      <div class="session-card">
+        <div class="session-title">Current session</div>
+        <div class="session-row">
+          <div class="session-lbl">Customer</div>
+          @if (existingCustomerId(); as id) {
+            <div class="session-val">{{ id }}</div>
+          } @else {
+            <div class="session-empty">Not set up yet</div>
+          }
         </div>
-      }
-    </form>
-  } @else {
-    <form class="setup-form" [formGroup]="runnerForm" (ngSubmit)="createRunner()">
-      <div class="field">
-        <label for="r-name">Full name</label>
-        <input id="r-name" type="text" formControlName="fullName" placeholder="Sipho Mahlangu" />
-      </div>
-      <div class="field">
-        <label for="r-email">Email</label>
-        <input id="r-email" type="email" formControlName="email" placeholder="sipho@example.com" />
-      </div>
-      <div class="field">
-        <label for="r-phone">Phone (optional)</label>
-        <input id="r-phone" type="tel" formControlName="phoneNumber" placeholder="071 000 5678" />
-      </div>
-      <div class="field">
-        <label>Transport mode</label>
-        <div class="chiprow">
-          @for (mode of transportModes; track mode) {
-            <button
-              type="button"
-              class="chip"
-              [class.active]="runnerForm.controls.transportMode.value === mode"
-              (click)="runnerForm.controls.transportMode.setValue(mode)"
-            >
-              {{ mode }}
-            </button>
+        <div class="session-row">
+          <div class="session-lbl">Runner</div>
+          @if (existingRunnerId(); as id) {
+            <div class="session-val">{{ id }}</div>
+          } @else {
+            <div class="session-empty">Not set up yet</div>
           }
         </div>
       </div>
-
-      @if (submitError(); as err) {
-        <p class="error-text">{{ err }}</p>
-      }
-
-      <button type="submit" class="cta-btn" [disabled]="submitting()">
-        {{ submitting() ? 'Creating…' : 'Create runner' }}
-      </button>
-
-      @if (existingRunnerId(); as id) {
-        <div class="id-stub">
-          <div class="id-stub-lbl">Current runner id</div>
-          <div class="id-stub-val">{{ id }}</div>
-        </div>
-      }
-    </form>
-  }
+    </div>
+  </div>
 
 </section>

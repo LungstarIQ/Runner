@@ -14,110 +14,153 @@
       <a class="cancel" routerLink="/">Close</a>
     </header>
 
-    @if (isBranch()) {
-      <div class="branch-banner" [class.risk]="errand.status !== 'PAYMENT_FAILED'">
-        <div class="branch-label">{{ statusLabels[errand.status] }}</div>
-        <div class="branch-sub">
-          @if (errand.status === 'DISPUTED') {
-            This ticket has been flagged for review and is off the normal flow.
-          } @else if (errand.status === 'CANCELLED') {
-            This errand was cancelled before a runner committed to it.
-          } @else {
-            The last payment attempt failed — retry below.
-          }
-        </div>
-      </div>
-    } @else {
-      <div class="steps">
-        @for (status of statusOrder; track status; let i = $index) {
-          <div class="step" [class.done]="i < stepIndex()" [class.current]="i === stepIndex()">
-            <div class="step-dot">
-              @if (i < stepIndex()) {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-              }
-            </div>
-            @if (i < statusOrder.length - 1) {
-              <div class="step-line"></div>
-            }
-            <div class="step-body">
-              <div class="step-lbl">{{ statusLabels[status] }}</div>
-              @if (status === 'PROCESSING_PAYMENT' && polling()) {
-                <div class="step-sub">Waiting on the async payment result…</div>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    }
-
     @if (actionError(); as err) {
       <p class="status-text error">{{ err }}</p>
     }
 
     @if (errand.status === 'COMPLETED') {
-      <div class="done-block">
-        <div class="sec-lbl">Transactions</div>
-        <div class="txn-list">
-          @for (txn of transactions(); track txn.id) {
-            <div class="txn-row">
-              <div class="txn-type">{{ txn.type }}</div>
-              <div class="txn-amt" [class.neg]="txn.type === 'REFUND'">R{{ txn.amount }}</div>
+      <div class="track-layout">
+        <div class="track-left">
+          @if (isBranch()) {
+            <div class="branch-banner">
+              <div class="branch-label">{{ statusLabels[errand.status] }}</div>
+              <div class="branch-sub">This ticket completed successfully.</div>
+            </div>
+          } @else {
+            <div class="steps">
+              @for (status of statusOrder; track status; let i = $index) {
+                <div class="step" [class.done]="i < stepIndex()" [class.current]="i === stepIndex()">
+                  <div class="step-dot">
+                    @if (i < stepIndex()) {
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    }
+                  </div>
+                  @if (i < statusOrder.length - 1) {
+                    <div class="step-line"></div>
+                  }
+                  <div class="step-body">
+                    <div class="step-lbl">{{ statusLabels[status] }}</div>
+                  </div>
+                </div>
+              }
             </div>
           }
         </div>
 
-        @if (!reviewSubmitted()) {
-          <div class="sec-lbl">Rate your runner</div>
-          <div class="stars">
-            @for (n of [1, 2, 3, 4, 5]; track n) {
-              <button type="button" class="star-btn" (click)="setRating(n)">
-                <svg viewBox="0 0 24 24" [attr.fill]="n <= reviewRating() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z" />
-                </svg>
+        <div class="track-right done-block">
+          <div class="sec-lbl">Transactions</div>
+          <div class="txn-list">
+            @for (txn of transactions(); track txn.id) {
+              <div class="txn-row">
+                <div class="txn-type">{{ txn.type }}</div>
+                <div class="txn-amt" [class.neg]="txn.type === 'REFUND'">R{{ txn.amount }}</div>
+              </div>
+            }
+          </div>
+
+          @if (!reviewSubmitted()) {
+            <div class="sec-lbl">Rate your runner</div>
+            <div class="stars">
+              @for (n of [1, 2, 3, 4, 5]; track n) {
+                <button type="button" class="star-btn" (click)="setRating(n)">
+                  <svg viewBox="0 0 24 24" [attr.fill]="n <= reviewRating() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z" />
+                  </svg>
+                </button>
+              }
+            </div>
+            <textarea
+              class="textarea-plate"
+              placeholder="Quick and polite, would use again."
+              [value]="reviewComment()"
+              (input)="setComment($event)"
+            ></textarea>
+            <button type="button" class="cta-btn" [disabled]="acting()" (click)="submitReview()">
+              {{ acting() ? 'Submitting…' : 'Submit review' }}
+            </button>
+          } @else {
+            <p class="status-text">Review submitted — thanks.</p>
+          }
+
+          @if (!refunded()) {
+            <button type="button" class="btn-secondary" [disabled]="acting()" (click)="requestRefund()">
+              Request refund
+            </button>
+          } @else {
+            <p class="status-text">Refunded — see the transaction list above.</p>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="track-layout">
+        <div class="track-left">
+          @if (isBranch()) {
+            <div class="branch-banner" [class.risk]="errand.status !== 'PAYMENT_FAILED'">
+              <div class="branch-label">{{ statusLabels[errand.status] }}</div>
+              <div class="branch-sub">
+                @if (errand.status === 'DISPUTED') {
+                  This ticket has been flagged for review and is off the normal flow.
+                } @else if (errand.status === 'CANCELLED') {
+                  This errand was cancelled before a runner committed to it.
+                } @else {
+                  The last payment attempt failed — retry below.
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="steps">
+              @for (status of statusOrder; track status; let i = $index) {
+                <div class="step" [class.done]="i < stepIndex()" [class.current]="i === stepIndex()">
+                  <div class="step-dot">
+                    @if (i < stepIndex()) {
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    }
+                  </div>
+                  @if (i < statusOrder.length - 1) {
+                    <div class="step-line"></div>
+                  }
+                  <div class="step-body">
+                    <div class="step-lbl">{{ statusLabels[status] }}</div>
+                    @if (status === 'PROCESSING_PAYMENT' && polling()) {
+                      <div class="step-sub">Waiting on the async payment result…</div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="track-right">
+          <div class="summary-card">
+            <div class="active-tag">TICKET {{ errand.id.slice(0, 6) }}</div>
+            <div class="summary-status">{{ statusLabels[errand.status] }}</div>
+            <div class="summary-fare">R{{ errand.payoutAmount }}</div>
+          </div>
+
+          <div class="action-row">
+            @if (canReportIssue()) {
+              <button type="button" class="btn-secondary" [disabled]="acting()" (click)="reportIssue()">
+                Report issue
+              </button>
+            }
+            @if (hasPrimaryAction()) {
+              <button type="button" class="cta-btn" [disabled]="acting() || polling()" (click)="primaryAction()">
+                @if (polling()) {
+                  Processing…
+                } @else if (acting()) {
+                  Working…
+                } @else {
+                  {{ errand.status === 'POSTED' ? primaryLabels['POSTED'] : primaryLabels[errand.status] }}
+                }
               </button>
             }
           </div>
-          <textarea
-            class="textarea-plate"
-            placeholder="Quick and polite, would use again."
-            [value]="reviewComment()"
-            (input)="setComment($event)"
-          ></textarea>
-          <button type="button" class="cta-btn" [disabled]="acting()" (click)="submitReview()">
-            {{ acting() ? 'Submitting…' : 'Submit review' }}
-          </button>
-        } @else {
-          <p class="status-text">Review submitted — thanks.</p>
-        }
-
-        @if (!refunded()) {
-          <button type="button" class="btn-secondary" [disabled]="acting()" (click)="requestRefund()">
-            Request refund
-          </button>
-        } @else {
-          <p class="status-text">Refunded — see the transaction list above.</p>
-        }
-      </div>
-    } @else {
-      <div class="action-row">
-        @if (canReportIssue()) {
-          <button type="button" class="btn-secondary" [disabled]="acting()" (click)="reportIssue()">
-            Report issue
-          </button>
-        }
-        @if (hasPrimaryAction()) {
-          <button type="button" class="cta-btn" [disabled]="acting() || polling()" (click)="primaryAction()">
-            @if (polling()) {
-              Processing…
-            } @else if (acting()) {
-              Working…
-            } @else {
-              {{ errand.status === 'POSTED' ? primaryLabels['POSTED'] : primaryLabels[errand.status] }}
-            }
-          </button>
-        }
+        </div>
       </div>
     }
 

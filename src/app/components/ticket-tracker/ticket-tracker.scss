@@ -27,6 +27,51 @@
   max-width: 480px;
 }
 
+.track-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.track-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.track-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-card {
+  background: #fff;
+  border: 1px dashed var(--maroon);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.summary-status {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 7px;
+}
+
+.summary-fare {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  color: var(--amber-dark);
+  margin-top: 6px;
+}
+
+.active-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--maroon);
+  letter-spacing: 0.04em;
+}
+
 .status-text {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11.5px;
@@ -301,9 +346,28 @@
 @media (min-width: 900px) {
   .tracker {
     padding: 0;
+    max-width: none;
   }
 
   .track-head h1 {
     font-size: 17px;
+  }
+
+  .track-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .track-left {
+    flex: 1;
+    max-width: 480px;
+  }
+
+  .track-right {
+    width: 300px;
+    flex: none;
+    position: sticky;
+    top: 26px;
   }
 }

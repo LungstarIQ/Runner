@@ -19,6 +19,18 @@
   padding: 16px;
 }
 
+.sec-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sec-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.2px;
+}
+
 .chips {
   display: flex;
   gap: 7px;
@@ -139,8 +151,20 @@
     padding: 0;
   }
 
+  .sec-head {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chips {
+    overflow-x: visible;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
   .card-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 14px;
   }
 
