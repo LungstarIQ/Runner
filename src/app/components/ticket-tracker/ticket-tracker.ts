@@ -14,6 +14,7 @@ import { ERRAND_STATUS_ORDER, ERRAND_STATUS_LABELS, NEXT_EVENT_FOR_STATUS, CANCE
   styleUrl: './ticket-tracker.scss',
 })
 export class TicketTracker implements OnInit {
+  
   private readonly route = inject(ActivatedRoute);
   private readonly errandService = inject(ErrandService);
   private readonly devSession = inject(DevSessionService);

@@ -14,7 +14,7 @@ export const routes: Routes = [
       { path: '', component: Home },
       { path: 'errands', component: BrowseErrands },
       { path: 'errands/new', component: PostErrand },
-      { path: 'errands/:id', component: TicketTracker },
+      { path: 'errand', component: TicketTracker },
       { path: 'dev-setup', component: DevSetup},
     ],
   },
