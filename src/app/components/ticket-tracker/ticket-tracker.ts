@@ -5,6 +5,7 @@ import { DevSessionService } from '../../services/dev-session.service';
 import { ErrandStatus } from '../../models/errand.model';
 import { TransactionModel } from '../../models/transaction.model';
 import { ERRAND_STATUS_ORDER, ERRAND_STATUS_LABELS, NEXT_EVENT_FOR_STATUS, CANCEL_EVENT_FOR_STATUS, PRIMARY_ACTION_LABELS, BRANCH_STATUSES } from '../../constants/errand.constant';
+import { extractApiError } from '../../utils/api-error.util';
 
 @Component({
   selector: 'app-ticket-tracker',
@@ -80,8 +81,8 @@ export class TicketTracker implements OnInit {
       if (errand.status === 'COMPLETED') {
         this.transactions.set(await this.errandService.getTransactions(id));
       }
-    } catch {
-      this.loadError.set("Couldn't load that ticket.");
+    } catch (err) {
+      this.loadError.set(extractApiError(err, "Couldn't load that ticket."));
     } finally {
       this.loading.set(false);
     }
@@ -120,8 +121,8 @@ export class TicketTracker implements OnInit {
           this.transactions.set(await this.errandService.getTransactions(errand.id));
         }
       }
-    } catch {
-      this.actionError.set("That action didn't go through. Try again.");
+    } catch (err) {
+      this.actionError.set(extractApiError(err, "That action didn't go through. Try again."));
     } finally {
       this.acting.set(false);
     }
@@ -137,8 +138,8 @@ export class TicketTracker implements OnInit {
     this.actionError.set(null);
     try {
       await this.errandService.transition(errand.id, event);
-    } catch {
-      this.actionError.set("Couldn't report that. Try again.");
+    } catch (err) {
+      this.actionError.set(extractApiError(err, "Couldn't report that. Try again."));
     } finally {
       this.acting.set(false);
     }
@@ -163,8 +164,8 @@ export class TicketTracker implements OnInit {
         comment: this.reviewComment(),
       });
       this.reviewSubmitted.set(true);
-    } catch {
-      this.actionError.set("Couldn't submit that review.");
+    } catch (err) {
+      this.actionError.set(extractApiError(err, "Couldn't submit that review."));
     } finally {
       this.acting.set(false);
     }
@@ -179,8 +180,8 @@ export class TicketTracker implements OnInit {
       await this.errandService.refund(errand.id);
       this.transactions.set(await this.errandService.getTransactions(errand.id));
       this.refunded.set(true);
-    } catch {
-      this.actionError.set("Couldn't process that refund.");
+    } catch (err) {
+      this.actionError.set(extractApiError(err, "Couldn't process that refund."));
     } finally {
       this.acting.set(false);
     }

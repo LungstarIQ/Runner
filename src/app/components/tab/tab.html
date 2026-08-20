@@ -1,5 +1,7 @@
 <div class="app">
 
+  <app-toast-stack></app-toast-stack>
+
   <!-- Sidebar: desktop only (hidden below 900px via CSS) -->
   <aside class="sidebar">
     <div class="side-brand">
@@ -17,18 +19,22 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7" /><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" /></svg>
         Home
       </a>
-      <a class="side-item" routerLink="/errands" routerLinkActive="active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
-        Browse errands
-      </a>
-      <a class="side-item" routerLink="/errands/new" routerLinkActive="active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-        Post an errand
-      </a>
-      <a class="side-item" routerLink="/runners" routerLinkActive="active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" /></svg>
-        Find a runner
-      </a>
+
+      @if (activeRole() === 'customer') {
+        <a class="side-item" routerLink="/errands/new" routerLinkActive="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+          Post an errand
+        </a>
+        <a class="side-item" routerLink="/runners" routerLinkActive="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" /></svg>
+          Find a runner
+        </a>
+      } @else {
+        <a class="side-item" routerLink="/errands" routerLinkActive="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
+          Browse errands
+        </a>
+      }
 
       <div class="side-sec-lbl" style="margin-top: 14px;">account</div>
       <a class="side-item" routerLink="/dev-setup" routerLinkActive="active">
@@ -37,21 +43,77 @@
       </a>
     </nav>
 
-    <div class="side-foot">
-      <div class="side-avatar">{{ customerId() ? customerId()!.slice(0, 2).toUpperCase() : '—' }}</div>
-      <div>
-        @if (customerId(); as id) {
-          <div class="side-foot-name">Customer session</div>
-          <div class="side-foot-sub">{{ id.slice(0, 8) }}…</div>
-        } @else {
-          <div class="side-foot-name">No customer yet</div>
-          <div class="side-foot-sub">Set one up →</div>
-        }
+    <div class="role-switch">
+      <div class="role-switch-lbl">Viewing as (this window)</div>
+      <div class="role-switch-row">
+        <button
+          type="button"
+          class="role-btn"
+          [class.active]="activeRole() === 'customer'"
+          (click)="setRole('customer')"
+        >
+          Customer
+        </button>
+        <button
+          type="button"
+          class="role-btn"
+          [class.active]="activeRole() === 'runner'"
+          (click)="setRole('runner')"
+        >
+          Runner
+        </button>
       </div>
+    </div>
+
+    <div class="side-foot">
+      @if (activeRole() === 'customer') {
+        <div class="side-avatar">{{ customerId() ? customerId()!.slice(0, 2).toUpperCase() : '—' }}</div>
+        <div>
+          @if (customerId(); as id) {
+            <div class="side-foot-name">Customer session</div>
+            <div class="side-foot-sub">{{ id.slice(0, 8) }}…</div>
+          } @else {
+            <div class="side-foot-name">No customer yet</div>
+            <div class="side-foot-sub">Set one up →</div>
+          }
+        </div>
+      } @else {
+        <div class="side-avatar">{{ runnerId() ? runnerId()!.slice(0, 2).toUpperCase() : '—' }}</div>
+        <div>
+          @if (runnerId(); as id) {
+            <div class="side-foot-name">Runner session</div>
+            <div class="side-foot-sub">{{ id.slice(0, 8) }}…</div>
+          } @else {
+            <div class="side-foot-name">No runner yet</div>
+            <div class="side-foot-sub">Set one up →</div>
+          }
+        </div>
+      }
     </div>
   </aside>
 
   <div class="shell-main">
+    <!-- Role switch: mobile only, mirrors the sidebar version on desktop -->
+    <div class="mobile-role-switch">
+      <span class="role-switch-lbl">Viewing as:</span>
+      <button
+        type="button"
+        class="role-btn"
+        [class.active]="activeRole() === 'customer'"
+        (click)="setRole('customer')"
+      >
+        Customer
+      </button>
+      <button
+        type="button"
+        class="role-btn"
+        [class.active]="activeRole() === 'runner'"
+        (click)="setRole('runner')"
+      >
+        Runner
+      </button>
+    </div>
+
     <!-- Topbar: desktop only -->
     <div class="topbar">
       <div class="search">
@@ -59,10 +121,17 @@
         <input type="text" placeholder="Search errands, runners, tickets…" />
       </div>
       <div class="topbar-spacer"></div>
-      <a class="cta-btn" routerLink="/errands/new">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14" /></svg>
-        Post an errand
-      </a>
+      @if (activeRole() === 'customer') {
+        <a class="cta-btn" routerLink="/errands/new">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14" /></svg>
+          Post an errand
+        </a>
+      } @else {
+        <a class="cta-btn" routerLink="/errands">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
+          Browse errands
+        </a>
+      }
     </div>
 
     <!-- Page content -->
@@ -76,18 +145,21 @@
         <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7" /><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" /></svg>
         <span>Home</span>
       </a>
-      <a class="navbtn" routerLink="/errands/new" routerLinkActive="active">
-        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-        <span>Post</span>
-      </a>
-      <a class="navbtn" routerLink="/errands" routerLinkActive="active">
-        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16M4 8v11a1 1 0 001 1h14a1 1 0 001-1V8M4 8l2-4h12l2 4" /></svg>
-        <span>Tickets</span>
-      </a>
-      <a class="navbtn" routerLink="/runners" routerLinkActive="active">
-        <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" /></svg>
-        <span>Runners</span>
-      </a>
+      @if (activeRole() === 'customer') {
+        <a class="navbtn" routerLink="/errands/new" routerLinkActive="active">
+          <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+          <span>Post</span>
+        </a>
+        <a class="navbtn" routerLink="/runners" routerLinkActive="active">
+          <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" /></svg>
+          <span>Runners</span>
+        </a>
+      } @else {
+        <a class="navbtn" routerLink="/errands" routerLinkActive="active">
+          <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
+          <span>Browse</span>
+        </a>
+      }
       <a class="navbtn" routerLink="/dev-setup" routerLinkActive="active">
         <svg class="navicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
         <span>You</span>

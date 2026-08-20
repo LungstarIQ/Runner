@@ -1,101 +1,172 @@
 <section class="dashboard">
 
-  @if (customer(); as c) {
-    <header class="greet-row">
-      <div>
-        <h1 class="greet-hello">Sawubona, {{ c.fullName.split(' ')[0] }}</h1>
-        <p class="greet-sub">{{ today | date: 'EEEE, h:mma' }}</p>
-      </div>
-      <a class="cta-btn" routerLink="/errands/new">+ Post an errand</a>
-    </header>
+  @if (activeRole() === 'customer') {
 
-    <div class="stat-row">
-      <div class="stat-card">
-        <div class="stat-num">{{ walletBalance() !== null ? ('R' + walletBalance()) : '—' }}</div>
-        <div class="stat-lbl">wallet balance</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">{{ runner()?.rating ?? '—' }}{{ runner()?.rating ? ' ★' : '' }}</div>
-        <div class="stat-lbl">runner rating</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">{{ activeErrand() ? 1 : 0 }}</div>
-        <div class="stat-lbl">active ticket</div>
-      </div>
-    </div>
+    @if (customer(); as c) {
+      <header class="greet-row">
+        <div>
+          <h1 class="greet-hello">Sawubona, {{ c.fullName.split(' ')[0] }}</h1>
+          <p class="greet-sub">{{ today | date: 'EEEE, h:mma' }} · viewing as customer</p>
+        </div>
+        <a class="cta-btn" routerLink="/errands/new">+ Post an errand</a>
+      </header>
 
-    <div class="grid-cols">
-      <div class="main-col">
-        @if (activeErrand(); as errand) {
-          <a class="active-card" [routerLink]="['/errands', errand.id]">
-            <div class="active-top">
-              <span class="active-tag">TICKET {{ errand.id.slice(0, 6) }} — {{ statusLabels[errand.status] }}</span>
-              <span class="active-view">view ticket →</span>
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-num">{{ customerWalletBalance() !== null ? ('R' + customerWalletBalance()) : '—' }}</div>
+          <div class="stat-lbl">wallet balance</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">{{ activeErrand() ? 1 : 0 }}</div>
+          <div class="stat-lbl">active ticket</div>
+        </div>
+      </div>
+
+      <div class="grid-cols">
+        <div class="main-col">
+          @if (activeErrand(); as errand) {
+            <a class="active-card" [routerLink]="['/errands', errand.id]">
+              <div class="active-top">
+                <span class="active-tag">TICKET {{ errand.id.slice(0, 6) }} — {{ statusLabels[errand.status] }}</span>
+                <span class="active-view">view ticket →</span>
+              </div>
+              <div class="active-task">{{ errand.description }}</div>
+              <div class="active-meta">
+                <span class="active-dot"></span>
+                @if (errand.runnerId) {
+                  Runner assigned · R{{ errand.payoutAmount }}
+                } @else {
+                  Waiting for a runner to claim this
+                }
+              </div>
+            </a>
+          } @else {
+            <div class="active-card empty">
+              <div class="active-task">No active errand right now</div>
+              <div class="active-meta">Post one, or browse what's nearby.</div>
             </div>
-            <div class="active-task">{{ errand.description }}</div>
-            <div class="active-meta">
-              <span class="active-dot"></span>
-              @if (errand.runnerId) {
-                Runner assigned · R{{ errand.payoutAmount }}
-              } @else {
-                Waiting for a runner to claim this
-              }
-            </div>
-          </a>
-        } @else {
-          <div class="active-card empty">
-            <div class="active-task">No active errand right now</div>
-            <div class="active-meta">Post one, or browse what's nearby.</div>
+          }
+
+          <div class="quick-row">
+            <a class="quick-btn" routerLink="/errands/new">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span>Post an errand</span>
+            </a>
+            <a class="quick-btn" routerLink="/runners">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" />
+              </svg>
+              <span>Find a runner</span>
+            </a>
+            <a class="quick-btn" routerLink="/dev-setup">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" /><path d="M12 6v6l4 2" />
+              </svg>
+              <span>Dev setup</span>
+            </a>
           </div>
-        }
+        </div>
 
-        <div class="quick-row">
-          <a class="quick-btn" routerLink="/errands/new">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-            <span>Post an errand</span>
-          </a>
-          <a class="quick-btn" routerLink="/errands">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
-            </svg>
-            <span>Browse errands</span>
-          </a>
-          <a class="quick-btn" routerLink="/runners">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="8" r="3.5" /><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6" />
-            </svg>
-            <span>Find a runner</span>
-          </a>
-          <a class="quick-btn" routerLink="/dev-setup">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" /><path d="M12 6v6l4 2" />
-            </svg>
-            <span>Dev setup</span>
-          </a>
+        <!-- Right rail -- desktop only. Both are placeholders: there's no
+             activity-log or runner-list endpoint on the backend yet, so
+             this shows an honest empty state rather than fabricated data. -->
+        <div class="rail-col">
+          <div class="rail-card">
+            <div class="rail-title">Recent activity</div>
+            <p class="rail-empty">No activity endpoint on the backend yet.</p>
+          </div>
+          <div class="rail-card">
+            <div class="rail-title">Top runners near you</div>
+            <p class="rail-empty">No runner list endpoint on the backend yet.</p>
+          </div>
         </div>
       </div>
-
-      <!-- Right rail -- desktop only. Both are placeholders: there's no
-           activity-log or runner-list endpoint on the backend yet, so
-           this shows an honest empty state rather than fabricated data. -->
-      <div class="rail-col">
-        <div class="rail-card">
-          <div class="rail-title">Recent activity</div>
-          <p class="rail-empty">No activity endpoint on the backend yet.</p>
-        </div>
-        <div class="rail-card">
-          <div class="rail-title">Top runners near you</div>
-          <p class="rail-empty">No runner list endpoint on the backend yet.</p>
-        </div>
+    } @else {
+      <div class="active-card empty">
+        <div class="active-task">No test customer set up yet</div>
+        <div class="active-meta">Head to dev setup to create one — you're viewing as customer.</div>
       </div>
-    </div>
+    }
+
   } @else {
-    <div class="active-card empty">
-      <div class="active-task">No test customer set up yet</div>
-      <div class="active-meta">Head to dev setup to create one before posting or browsing.</div>
-    </div>
+
+    @if (runner(); as r) {
+      <header class="greet-row">
+        <div>
+          <h1 class="greet-hello">Sawubona, {{ r.fullName.split(' ')[0] }}</h1>
+          <p class="greet-sub">{{ today | date: 'EEEE, h:mma' }} · viewing as runner</p>
+        </div>
+        <a class="cta-btn" routerLink="/errands">Browse errands</a>
+      </header>
+
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-num">{{ runnerWalletBalance() !== null ? ('R' + runnerWalletBalance()) : '—' }}</div>
+          <div class="stat-lbl">wallet balance</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">{{ r.rating }} ★</div>
+          <div class="stat-lbl">your rating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">{{ activeErrand() ? 1 : 0 }}</div>
+          <div class="stat-lbl">active ticket</div>
+        </div>
+      </div>
+
+      <div class="grid-cols">
+        <div class="main-col">
+          @if (activeErrand(); as errand) {
+            <a class="active-card" [routerLink]="['/errands', errand.id]">
+              <div class="active-top">
+                <span class="active-tag">TICKET {{ errand.id.slice(0, 6) }} — {{ statusLabels[errand.status] }}</span>
+                <span class="active-view">view ticket →</span>
+              </div>
+              <div class="active-task">{{ errand.description }}</div>
+              <div class="active-meta">
+                <span class="active-dot"></span>
+                Payout R{{ errand.payoutAmount }}
+              </div>
+            </a>
+          } @else {
+            <div class="active-card empty">
+              <div class="active-task">No claimed errand right now</div>
+              <div class="active-meta">Browse what's nearby and claim one.</div>
+            </div>
+          }
+
+          <div class="quick-row">
+            <a class="quick-btn" routerLink="/errands">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
+              </svg>
+              <span>Browse errands</span>
+            </a>
+            <a class="quick-btn" routerLink="/dev-setup">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" /><path d="M12 6v6l4 2" />
+              </svg>
+              <span>Dev setup</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="rail-col">
+          <div class="rail-card">
+            <div class="rail-title">Recent activity</div>
+            <p class="rail-empty">No activity endpoint on the backend yet.</p>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="active-card empty">
+        <div class="active-task">No test runner set up yet</div>
+        <div class="active-meta">Head to dev setup to create one — you're viewing as runner.</div>
+      </div>
+    }
+
   }
 
 </section>

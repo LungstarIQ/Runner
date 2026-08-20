@@ -1,18 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
-:root {
-  --ink: #18140f;
-  --paper: #f1ead9;
-  --paper-2: #e8dfc9;
-  --amber: #e8a23c;
-  --amber-dark: #8a5a17;
-  --maroon: #7a2a1f;
-  --maroon-light: #f1d9cf;
-  --green: #2e6b4f;
-  --green-light: #dceadf;
-  --red: #b3311f;
-  --red-light: #f6dbd6;
-  --line: rgba(24, 20, 15, 0.16);
-}
+// Global stylesheet -- replaces src/styles.scss (or .css) at the project
+// root. Two things neither component-level SCSS could fix on its own:
+//
+// 1. Every component assumes 'Anton' / 'Archivo' / 'IBM Plex Mono' are
+//    already loaded, but nothing in the real app ever imported them --
+//    that <link> only existed in the standalone HTML mockups. Without
+//    this, every font-family in every component silently falls back to
+//    the browser default.
+// 2. Browsers apply an 8px margin to <body> by default; Angular doesn't
+//    reset it, so without this the whole shell sits offset from the
+//    edge regardless of what app-shell.component.scss says.
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -21,13 +18,33 @@
 html,
 body {
   margin: 0;
+  padding: 0;
   height: 100%;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'Archivo', system-ui, sans-serif;
 }
 
+body {
+  font-family: 'Archivo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Every chip/tab/segment button across the app (.cat, .chip, .seg, and any
+// future one) relies on a single .active class to show selection. The
+// browser's own default focus ring on <button> persists after a click
+// until something else is focused, which visually looks like a second
+// option is also selected even though only one .active class is ever
+// applied. Fixing it once here instead of patching every component:
+// no ring on a mouse click, a clean ring only for keyboard navigation.
 button {
   font-family: inherit;
-  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 2px solid #e8a23c;
+  outline-offset: 2px;
 }

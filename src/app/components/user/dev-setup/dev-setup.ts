@@ -4,6 +4,7 @@ import { CustomerService } from '../../../services/customer.service';
 import { RunnerService } from '../../../services/runner.service';
 import { DevSessionService } from '../../../services/dev-session.service';
 import { TransportMode } from '../../../models/runner.model';
+import { extractApiError } from '../../../utils/api-error.util';
 
 type SetupTab = 'customer' | 'runner';
 
@@ -64,8 +65,8 @@ export class DevSetup {
         phoneNumber: raw.phoneNumber || undefined,
       });
       this.devSession.setCustomerId(customer.id);
-    } catch {
-      this.submitError.set("Couldn't create that customer. Check the backend is running.");
+    } catch (err) {
+      this.submitError.set(extractApiError(err, "Couldn't create that customer. Check the backend is running."));
     } finally {
       this.submitting.set(false);
     }
@@ -87,8 +88,8 @@ export class DevSetup {
         transportMode: raw.transportMode,
       });
       this.devSession.setRunnerId(runner.id);
-    } catch {
-      this.submitError.set("Couldn't create that runner. Check the backend is running.");
+    } catch (err) {
+      this.submitError.set(extractApiError(err, "Couldn't create that runner. Check the backend is running."));
     } finally {
       this.submitting.set(false);
     }

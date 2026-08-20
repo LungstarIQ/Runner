@@ -5,10 +5,12 @@ import { environment } from '../../environments/environment';
 import { ErrandModel, CreateErrandRequest, ErrandEvent } from '../models/errand.model';
 import { TransactionModel } from '../models/transaction.model';
 import { ReviewModel, CreateReviewRequest } from '../models/review.model';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class ErrandService {
   private readonly http = inject(HttpClient);
+  private readonly notificationService = inject(NotificationService);
   private readonly base = `${environment.apiBaseUrl}/errands`;
 
   // Tracker + any other component that touches an errand read from this
@@ -33,6 +35,12 @@ export class ErrandService {
       this.http.post<ErrandModel>(this.base, request, { params }),
     );
     this.activeErrand.set(errand);
+    this.notificationService.notify({
+      kind: 'info',
+      title: 'New errand nearby',
+      body: errand.description,
+      targetRole: 'runner',
+    });
     return errand;
   }
 
@@ -42,6 +50,13 @@ export class ErrandService {
       this.http.post<ErrandModel>(`${this.base}/${errandId}/claim`, null, { params }),
     );
     this.activeErrand.set(errand);
+    this.notificationService.notify({
+      kind: 'success',
+      title: 'Your errand was accepted!',
+      body: `${errand.description} — a runner is on it`,
+      targetRole: 'customer',
+      targetCustomerId: errand.customerId,
+    });
     return errand;
   }
 

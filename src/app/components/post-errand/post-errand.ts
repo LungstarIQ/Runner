@@ -6,6 +6,7 @@ import { DevSessionService } from '../../services/dev-session.service';
 import { CreateErrandRequest } from '../../models/errand.model';
 import { LocationModel } from '../../models/location.model';
 import { ERRAND_CATEGORIES } from '../../constants/errand.constant';
+import { extractApiError } from '../../utils/api-error.util';
 
 @Component({
   selector: 'app-post-errand',
@@ -76,8 +77,8 @@ export class PostErrand {
     try {
       const created = await this.errandService.create(customerId, request);
       this.router.navigate(['/errands', created.id]);
-    } catch {
-      this.submitError.set("Couldn't post that errand. Check your connection and try again.");
+    } catch (err) {
+      this.submitError.set(extractApiError(err, "Couldn't post that errand. Check your connection and try again."));
     } finally {
       this.submitting.set(false);
     }
