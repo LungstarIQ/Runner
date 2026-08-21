@@ -142,6 +142,10 @@
             <div class="summary-fare">R{{ errand.payoutAmount }}</div>
           </div>
 
+          @if (errand.status === 'POSTED' && activeRole() === 'customer') {
+            <p class="status-text">Waiting for a runner to claim this.</p>
+          }
+
           <div class="action-row">
             @if (canReportIssue()) {
               <button type="button" class="btn-secondary" [disabled]="acting()" (click)="reportIssue()">

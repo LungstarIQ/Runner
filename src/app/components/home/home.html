@@ -22,6 +22,30 @@
         </div>
       </div>
 
+      <div class="wallet-actions">
+        <button type="button" class="wallet-btn" (click)="openWalletAction('topup')">+ Top up</button>
+        <button type="button" class="wallet-btn" (click)="openWalletAction('withdraw')">− Withdraw</button>
+      </div>
+
+      @if (walletActionOpen(); as kind) {
+        <div class="wallet-form">
+          <input
+            type="number"
+            min="1"
+            placeholder="Amount (R)"
+            [value]="walletAmount() || ''"
+            (input)="setWalletAmount($event)"
+          />
+          <button type="button" class="cta-btn small" [disabled]="walletActionBusy()" (click)="confirmWalletAction()">
+            {{ walletActionBusy() ? 'Working…' : kind === 'topup' ? 'Confirm top up' : 'Confirm withdrawal' }}
+          </button>
+          <button type="button" class="cancel-btn" (click)="closeWalletAction()">Cancel</button>
+          @if (walletActionError(); as err) {
+            <p class="error-text">{{ err }}</p>
+          }
+        </div>
+      }
+
       <div class="grid-cols">
         <div class="main-col">
           @if (activeErrand(); as errand) {
@@ -115,6 +139,30 @@
           <div class="stat-lbl">active ticket</div>
         </div>
       </div>
+
+      <div class="wallet-actions">
+        <button type="button" class="wallet-btn" (click)="openWalletAction('topup')">+ Top up</button>
+        <button type="button" class="wallet-btn" (click)="openWalletAction('withdraw')">− Withdraw</button>
+      </div>
+
+      @if (walletActionOpen(); as kind) {
+        <div class="wallet-form">
+          <input
+            type="number"
+            min="1"
+            placeholder="Amount (R)"
+            [value]="walletAmount() || ''"
+            (input)="setWalletAmount($event)"
+          />
+          <button type="button" class="cta-btn small" [disabled]="walletActionBusy()" (click)="confirmWalletAction()">
+            {{ walletActionBusy() ? 'Working…' : kind === 'topup' ? 'Confirm top up' : 'Confirm withdrawal' }}
+          </button>
+          <button type="button" class="cancel-btn" (click)="closeWalletAction()">Cancel</button>
+          @if (walletActionError(); as err) {
+            <p class="error-text">{{ err }}</p>
+          }
+        </div>
+      }
 
       <div class="grid-cols">
         <div class="main-col">

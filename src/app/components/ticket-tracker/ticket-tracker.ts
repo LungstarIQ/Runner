@@ -6,6 +6,7 @@ import { ErrandStatus } from '../../models/errand.model';
 import { TransactionModel } from '../../models/transaction.model';
 import { ERRAND_STATUS_ORDER, ERRAND_STATUS_LABELS, NEXT_EVENT_FOR_STATUS, CANCEL_EVENT_FOR_STATUS, PRIMARY_ACTION_LABELS, BRANCH_STATUSES } from '../../constants/errand.constant';
 import { extractApiError } from '../../utils/api-error.util';
+import { RoleSessionService } from '../../services/role-session.service';
 
 @Component({
   selector: 'app-ticket-tracker',
@@ -19,6 +20,9 @@ export class TicketTracker implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly errandService = inject(ErrandService);
   private readonly devSession = inject(DevSessionService);
+  private readonly roleSession = inject(RoleSessionService);
+ 
+  readonly activeRole = this.roleSession.activeRole;
  
   // Shared with the dashboard -- claiming/transitioning here updates that
   // screen's active-ticket card too, without a refetch.
@@ -55,7 +59,13 @@ export class TicketTracker implements OnInit {
   readonly hasPrimaryAction = computed(() => {
     const errand = this.errand();
     if (!errand) return false;
-    return errand.status === 'POSTED' || !!NEXT_EVENT_FOR_STATUS[errand.status];
+    if (errand.status === 'POSTED') {
+      // Claiming is a runner action -- hide it entirely from customer view,
+      // even though a customer can legitimately view their own posted
+      // errand's status.
+      return this.roleSession.activeRole() === 'runner';
+    }
+    return !!NEXT_EVENT_FOR_STATUS[errand.status];
   });
  
   readonly canReportIssue = computed(() => {
@@ -96,6 +106,10 @@ export class TicketTracker implements OnInit {
     this.actionError.set(null);
     try {
       if (errand.status === 'POSTED') {
+        if (this.roleSession.activeRole() !== 'runner') {
+          this.actionError.set('Switch to runner view to claim this errand.');
+          return;
+        }
         const runnerId = this.devSession.runnerId();
         if (!runnerId) {
           this.actionError.set('No test runner set up yet — create one in dev setup to claim this.');
